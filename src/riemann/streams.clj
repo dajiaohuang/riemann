@@ -2230,11 +2230,13 @@
                                 y-avg (/ (reduce + y) (count y))
                                 x-sub (map #(- % x-avg) x)
                                 y-sub (map #(- % y-avg) y)
-                                m (/
-                                   (reduce + (map * x-sub y-sub))
-                                   (reduce + (map * x-sub x-sub)))
-                                b (- y-avg (* m x-avg))]
-                            (reset! coefs {:slope m :intercept b})
+                                x-variance (reduce + (map * x-sub x-sub))
+                                slope (if (zero? x-variance)
+                                        0
+                                        (/ (reduce + (map * x-sub y-sub))
+                                           x-variance))
+                                b (- y-avg (* slope x-avg))]
+                            (reset! coefs {:slope slope :intercept b})
                             (reset! last-rebuild (System/currentTimeMillis))
                             @coefs))
                   params (if (or
