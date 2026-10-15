@@ -2201,6 +2201,9 @@
   (in seconds) is specified the model will be rebuild periodically and
   not on every arriving event.
 
+  If every event in the window has the same timestamp, uses a constant
+  prediction equal to the mean metric; no time trend can be identified.
+
   E.g. predict the metric of service \"fs-usage\" 30 minutes in the
   future grouped by host:
 
